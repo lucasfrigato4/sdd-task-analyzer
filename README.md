@@ -2,7 +2,7 @@
 
 Módulo de análise de métricas e produtividade desenvolvido como parte do **Bootcamp III — Análise e Desenvolvimento de Sistemas (CEUB)**.
 
-O projeto utiliza a abordagem **Specification-Driven Development (SDD)**, na qual a especificação e os requisitos orientam o desenvolvimento, a implementação e a validação do software.
+O projeto utiliza a abordagem **Specification-Driven Development (SDD)**, na qual a especificação e as regras definidas orientam o desenvolvimento, a implementação e a validação do software.
 
 ## 📋 Sumário
 
@@ -24,7 +24,7 @@ O **SDD Task Analyzer** é um módulo desenvolvido em Python para analisar dados
 
 A implementação é orientada por uma especificação documentada e por testes automatizados, permitindo verificar se o comportamento do software está de acordo com os cenários previstos.
 
-O projeto também utiliza Docker para executar os testes em um ambiente isolado e GitHub Actions para automatizar sua validação a cada atualização do repositório.
+O projeto utiliza Docker para executar os testes em um ambiente isolado e GitHub Actions para automatizar sua validação.
 
 ## 📁 Estrutura do projeto
 
@@ -51,21 +51,21 @@ sdd-task-analyzer/
 
 | Arquivo ou diretório | Descrição |
 |---|---|
-| `.github/workflows/ci.yml` | Configuração do fluxo de integração contínua do GitHub Actions. |
+| `.github/workflows/ci.yml` | Configuração do workflow de integração contínua do GitHub Actions. |
 | `specs/task_analyzer_spec.md` | Especificação do sistema e comportamento esperado. |
 | `src/task_analyzer.py` | Implementação do analisador de tarefas. |
 | `tests/test_harness.py` | Testes automatizados para validar o comportamento do sistema. |
 | `CONTEXT_RULES.md` | Regras de contexto que orientam o desenvolvimento. |
 | `Dockerfile` | Instruções para construir a imagem Docker do projeto. |
-| `docker-compose.yml` | Configuração para executar o serviço por meio do Docker Compose. |
+| `docker-compose.yml` | Configuração do serviço executado pelo Docker Compose. |
 | `requirements.txt` | Dependências Python do projeto. |
 | `.gitignore` | Arquivos e diretórios que não devem ser versionados. |
 
 ## 🛠️ Tecnologias utilizadas
 
 - **Python 3.11:** linguagem utilizada no desenvolvimento.
-- **pytest:** framework de testes automatizados.
-- **Docker:** ferramenta para empacotar e executar o projeto em um ambiente isolado.
+- **pytest:** framework utilizado para executar os testes automatizados.
+- **Docker:** ferramenta para construir imagens e executar o projeto em contêineres.
 - **Docker Compose:** ferramenta para configurar e executar o serviço em contêiner.
 - **GitHub Actions:** ferramenta de automação para executar os testes continuamente.
 - **Markdown:** formato utilizado na documentação do projeto.
@@ -82,7 +82,7 @@ sdd-task-analyzer/
 - Docker Desktop ou Docker Engine.
 - Docker Compose.
 
-Não é necessário instalar as dependências Python diretamente no computador quando a execução é feita utilizando uma imagem Docker que já as instala durante a construção.
+A execução local exige a instalação do Python e das dependências. Com Docker, as dependências Python são instaladas durante a construção da imagem, conforme as instruções definidas no `Dockerfile`.
 
 ## 💻 Execução local
 
@@ -130,7 +130,7 @@ python -m pip install -r requirements.txt
 
 ## 🧪 Testes automatizados
 
-Os testes do projeto estão localizados em `tests/test_harness.py`.
+Os testes estão localizados no arquivo `tests/test_harness.py`.
 
 Para executar a suíte de testes localmente, utilize:
 
@@ -138,14 +138,14 @@ Para executar a suíte de testes localmente, utilize:
 python -m pytest -v
 ```
 
-Os testes verificam diferentes cenários de utilização do analisador, incluindo:
+Os cenários automatizados incluem:
 
 - Processamento de dados válidos e cálculo de métricas.
 - Tratamento de dados inconsistentes.
 - Tratamento de listas vazias.
 - Análise de tarefas pendentes.
 
-A execução realizada durante o desenvolvimento apresentou **4 testes aprovados**.
+Na execução realizada durante o desenvolvimento, os quatro testes automatizados foram aprovados.
 
 Exemplo de resultado:
 
@@ -153,11 +153,11 @@ Exemplo de resultado:
 4 passed
 ```
 
-Esse resultado corresponde à execução registrada durante o desenvolvimento. Caso a implementação ou os testes sejam modificados, o resultado poderá ser diferente.
+Esse resultado corresponde à execução registrada durante o desenvolvimento. Caso a implementação ou os testes sejam modificados, o resultado poderá mudar.
 
 ## 🐳 Execução com Docker
 
-O Docker permite construir uma imagem do projeto com suas dependências e executar os testes em um ambiente isolado.
+O Docker permite construir uma imagem com as dependências do projeto e executar os testes em um ambiente isolado.
 
 ### 1. Construir a imagem
 
@@ -173,11 +173,11 @@ docker build -t sdd-task-analyzer .
 docker run --rm sdd-task-analyzer
 ```
 
-O comando executa a instrução definida no `Dockerfile`. Na configuração utilizada durante o desenvolvimento, o contêiner executa os testes automatizados do projeto.
+O contêiner executa o comando configurado no `Dockerfile`. Na configuração atual, esse comando inicia o pytest para executar os testes automatizados.
 
 ## 🐳 Docker Compose
 
-O arquivo `docker-compose.yml` contém a configuração necessária para executar o serviço do projeto utilizando Docker Compose.
+O arquivo `docker-compose.yml` define o serviço `task-analyzer`, que constrói a imagem a partir do `Dockerfile` e executa o comportamento configurado para o contêiner.
 
 ### 1. Validar a configuração
 
@@ -193,23 +193,23 @@ Esse comando verifica se o arquivo de configuração pode ser interpretado corre
 docker compose build
 ```
 
-### 3. Executar o serviço
+### 3. Executar os testes
 
 ```bash
 docker compose up
 ```
 
-O serviço configurado executa os testes automatizados. Após a conclusão, o terminal apresenta o resultado da execução.
+O Docker Compose inicia o contêiner e executa os testes automatizados. O resultado da execução é apresentado no terminal.
 
-Na execução realizada durante o desenvolvimento, o Docker Compose apresentou **4 testes aprovados**, e o contêiner foi encerrado com código de saída `0`, indicando sucesso.
+Na execução realizada durante o desenvolvimento, os quatro testes foram aprovados e o contêiner foi encerrado com código de saída `0`, indicando sucesso.
 
-Para executar o serviço em primeiro plano e remover o contêiner ao final, caso o nome do serviço seja `task-analyzer`, também é possível utilizar:
+### 4. Executar novamente e remover o contêiner ao finalizar
 
 ```bash
 docker compose run --rm task-analyzer
 ```
 
-**Observação:** o nome utilizado no último comando precisa corresponder ao nome do serviço definido em `docker-compose.yml`.
+Esse comando executa o serviço `task-analyzer` e remove o contêiner criado ao término da execução.
 
 ## ⚙️ Integração contínua (CI)
 
@@ -221,45 +221,47 @@ O workflow está localizado em:
 .github/workflows/ci.yml
 ```
 
-O fluxo foi configurado para executar a validação do projeto nos eventos definidos no próprio arquivo, incluindo atualizações da branch principal, solicitações de pull request e execução manual.
-
 ### Etapas do workflow
 
-O fluxo de integração contínua contempla as seguintes etapas:
+O arquivo de integração contínua configura as seguintes etapas:
 
 1. Baixar o código do repositório.
-2. Configurar o ambiente Python 3.11.
-3. Instalar as dependências do projeto.
-4. Executar os testes automatizados utilizando pytest.
+2. Configurar o Python 3.11.
+3. Atualizar o pip.
+4. Instalar as dependências definidas em `requirements.txt`.
+5. Executar os testes automatizados com pytest.
+
+O workflow está configurado para ser acionado nos eventos definidos no próprio arquivo, incluindo atualizações do repositório, solicitações de pull request e execução manual.
 
 ### Como verificar o resultado
 
-Para consultar as execuções do workflow:
+Para consultar as execuções:
 
 1. Acesse o repositório no GitHub.
 2. Abra a aba **Actions**.
-3. Selecione uma execução do workflow.
-4. Consulte o resultado das etapas.
+3. Selecione a execução desejada.
+4. Confira o resultado das etapas.
 
 Uma execução concluída com sucesso indica que as etapas configuradas no workflow foram finalizadas sem erros.
 
-O workflow contribui para a identificação antecipada de falhas e para a manutenção da qualidade do código durante o desenvolvimento.
+A integração contínua contribui para identificar falhas antecipadamente e verificar o comportamento do projeto após alterações no código.
 
 ## 📐 Especificação e regras de contexto
 
-O projeto segue uma abordagem orientada à especificação, utilizando documentação e testes como referências para a implementação.
+O projeto segue uma abordagem orientada à especificação, utilizando documentação, regras de contexto e testes automatizados como referências para a implementação.
 
-Os principais arquivos relacionados a esse processo são:
+Os principais arquivos são:
 
-- **`specs/task_analyzer_spec.md`:** documenta a especificação do sistema e o comportamento esperado.
-- **`CONTEXT_RULES.md`:** reúne as regras de contexto que devem ser consideradas durante o desenvolvimento.
-- **`tests/test_harness.py`:** verifica o comportamento da implementação por meio de cenários automatizados.
+- **`specs/task_analyzer_spec.md`:** especificação do sistema e descrição do comportamento esperado.
+- **`CONTEXT_RULES.md`:** regras de contexto consideradas durante o desenvolvimento.
+- **`tests/test_harness.py`:** testes automatizados que verificam diferentes cenários de execução.
+- **`src/task_analyzer.py`:** implementação do analisador de tarefas.
 
-A utilização desses arquivos ajuda a manter a implementação alinhada aos requisitos definidos e permite validar o comportamento esperado por meio de testes reproduzíveis.
+A utilização desses arquivos ajuda a manter a implementação alinhada ao comportamento especificado e permite validar os resultados por meio de testes reproduzíveis.
 
 ## 🎓 Objetivo acadêmico
 
-Este projeto foi desenvolvido como parte do **Bootcamp III — Análise e Desenvolvimento de Sistemas (CEUB)**, com foco na aplicação prática de conceitos de especificação de software, implementação, testes automatizados, conteinerização e integração contínua.
+O projeto foi desenvolvido como parte do **Bootcamp III — Análise e Desenvolvimento de Sistemas (CEUB)**, com foco na aplicação prática de conceitos de especificação de software, implementação, testes automatizados, conteinerização e integração contínua.
 
 O repositório reúne o código-fonte, a especificação, as regras de contexto, os testes e os arquivos de configuração utilizados para executar e validar o sistema.
 
