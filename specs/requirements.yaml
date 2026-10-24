@@ -1,0 +1,140 @@
+# Requisitos estruturados do TaskAnalyzer
+# Baseado na especificação SDD do projeto.
+
+project:
+  name: TaskAnalyzer
+  version: "1.0"
+  description: "Módulo Python para análise de métricas e produtividade de tarefas."
+  language: Python
+  python_version: "3.11"
+
+functional_requirements:
+  - id: RF-01
+    title: "Receber conjunto de tarefas"
+    description: "Processar uma lista de tarefas representadas por dicionários."
+    priority: high
+
+  - id: RF-02
+    title: "Calcular tempo médio geral de conclusão"
+    description: "Calcular em horas a média entre criação e conclusão das tarefas concluídas com data válida."
+    output: tempo_medio_conclusao_geral
+    priority: high
+
+  - id: RF-03
+    title: "Calcular tempo médio por prioridade"
+    description: "Calcular médias em horas para as prioridades Baixa, Media e Alta."
+    output: tempo_medio_por_prioridade
+    priority: high
+
+  - id: RF-04
+    title: "Calcular taxa de atraso geral"
+    description: "Calcular o percentual de tarefas concluídas com atraso em relação à data limite informada."
+    output: taxa_atraso_geral
+    priority: high
+
+  - id: RF-05
+    title: "Calcular taxa de atraso por prioridade"
+    description: "Calcular as taxas de atraso separadas por prioridade."
+    output: taxa_atraso_por_prioridade
+    priority: high
+
+  - id: RF-06
+    title: "Contabilizar tarefas analisadas"
+    description: "Retornar a quantidade total de tarefas processadas."
+    output: total_tarefas_analisadas
+    priority: medium
+
+  - id: RF-07
+    title: "Agrupar indicadores por prioridade e status"
+    description: "Contabilizar tarefas por prioridade e pelos status Pendente, Concluida e Cancelada."
+    output: indicadores_por_prioridade
+    priority: high
+
+  - id: RF-08
+    title: "Validar consistência cronológica"
+    description: "Lançar TaskValidationError quando a conclusão ocorrer antes da criação."
+    priority: high
+
+  - id: RF-09
+    title: "Prevenir divisão por zero"
+    description: "Retornar médias e taxas iguais a 0.0 quando não houver dados suficientes."
+    priority: high
+
+non_functional_requirements:
+  - id: RNF-01
+    title: "Compatibilidade"
+    description: "Utilizar Python 3.11 e dependências declaradas no requirements.txt."
+
+  - id: RNF-02
+    title: "Testabilidade"
+    description: "Disponibilizar testes automatizados executáveis com pytest."
+
+  - id: RNF-03
+    title: "Integração contínua"
+    description: "Executar testes automaticamente por meio do GitHub Actions."
+
+  - id: RNF-04
+    title: "Reprodutibilidade"
+    description: "Permitir construir e executar o ambiente de testes com Docker e Docker Compose."
+
+  - id: RNF-05
+    title: "Observabilidade"
+    description: "Registrar eventos relevantes e erros por meio do logging."
+
+  - id: RNF-06
+    title: "Manutenibilidade"
+    description: "Manter especificação, código, testes e documentação versionados no repositório."
+
+  - id: RNF-07
+    title: "Governança e revisão humana"
+    description: "Revisar alterações e sugestões de IA antes de aceitá-las."
+
+  - id: RNF-08
+    title: "Privacidade e segurança"
+    description: "Não expor credenciais, tokens, segredos ou dados pessoais desnecessários."
+
+data_contract:
+  priority_values:
+    - Baixa
+    - Media
+    - Alta
+
+  status_values:
+    - Pendente
+    - Concluida
+    - Cancelada
+
+  required_fields:
+    - id
+    - titulo
+    - prioridade
+    - data_criacao
+    - status
+
+  optional_fields:
+    - data_conclusao
+    - data_limite
+
+  datetime_format: "datetime ou string ISO-8601"
+
+  outputs:
+    - tempo_medio_conclusao_geral
+    - tempo_medio_por_prioridade
+    - taxa_atraso_geral
+    - taxa_atraso_por_prioridade
+    - total_tarefas_analisadas
+    - indicadores_por_prioridade
+
+acceptance_criteria:
+  - "Os testes automatizados devem terminar sem falhas."
+  - "Datas cronologicamente inconsistentes devem gerar TaskValidationError."
+  - "Conjuntos sem tarefas concluídas devem retornar médias e taxas zeradas."
+  - "A imagem Docker deve ser construída com sucesso."
+  - "Docker Compose deve permitir executar os testes."
+  - "O workflow do GitHub Actions deve executar os testes."
+
+known_alignment_note: >
+  A implementação atual normaliza prioridades desconhecidas para Baixa e utiliza
+  valores padrão para alguns campos ausentes. A especificação declara valores
+  autorizados e campos obrigatórios. Essa diferença deve ser revisada para manter
+  a especificação e a implementação alinhadas.
